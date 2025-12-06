@@ -50,4 +50,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function findById($id)
+    {
+        return self::query()->find($id);
+    }
+    public function findByphone($phone, $select = ['*'])
+    {
+        return self::query()
+            ->select($select)
+            ->where('phone',$phone)
+            ->first();
+    }
+    public function updateById($id, $data)
+    {
+        return self::query()->where('id',$id)->update($data);
+    }
 }
