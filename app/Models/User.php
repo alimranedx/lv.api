@@ -43,6 +43,7 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+    const ROLE_SUPER_ADMIN = 9999;
     protected function casts(): array
     {
         return [

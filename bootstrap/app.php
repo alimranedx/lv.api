@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth.sanctum' => \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'bindings'     => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            'role'         => \App\Http\Middleware\RoleMiddleware::class,
         ]);
 
         $middleware->group('api', [

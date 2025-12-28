@@ -89,6 +89,7 @@ class ApiService
 
     const API_SERVICE_HTTP_CODE_VALID_REQUEST = 200;
     const API_SERVICE_HTTP_CODE_BAD_REQUEST = 400;
+    const DEFAULT_TRY_CATCH_ERROR_MESSAGE = 'Something went wrong! Please contact with support team.';
 
 
 }
