@@ -18,3 +18,19 @@ password: 123456
 
 first try to login with with phone and password that's return as response user_id and opt for testing purpose(real time otp goes to phone)
 the try to login with otp and user_id
+
+
+**installation process**
+
+=> clone project from github 
+=> change .env.example file to .env file 
+=> change database name 
+=> composer install for load all of depended packages
+=> npm run install 
+=> mpm run dev
+=> php artisan key:generate
+=> php artisan migrate
+=> composer run dev
+=> open in a browser as http://localhost:8000/
+
+
