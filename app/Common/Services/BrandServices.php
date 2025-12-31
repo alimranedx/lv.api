@@ -18,7 +18,7 @@ class BrandServices
             $validator = AppRequestValidation::validateBrandStoreRequest($input);
             if(!empty($validator['status_code'])){
                 $status_code = $validator['status_code'];
-                $status_message = $validator['status_code'];
+                $status_message = $validator['status_message'];
             }
             if(empty($status_code)){
                 $prepared_data = $this->prepareData($input);
@@ -70,7 +70,7 @@ class BrandServices
             $validator = AppRequestValidation::validateBrandUpdateRequest($input, $id);
             if(!empty($validator['status_code'])){
                 $status_code = $validator['status_code'];
-                $status_message = $validator['status_code'];
+                $status_message = $validator['status_message'];
             }
             if(empty($status_code)){
                 $prepared_data = $this->prepareData($input);

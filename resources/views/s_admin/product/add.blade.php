@@ -17,16 +17,16 @@
                             <div class="mb-3">
                                 <label class="form-label">Brand</label>
                                 <select class="selectpicker w-100"
-                                        id="brand" name="brand[]"
+                                        id="brand_id" name="brand_id"
                                         data-live-search="true"
                                         data-style="btn-light"
                                         title="Select Brand"
-                                        multiple
+{{--                                        multiple--}}
                                         >
-                                    <option value="">Nothing selected</option>
-                                    <option>Apple</option>
-                                    <option>Samsung</option>
-                                    <option>Xiaomi</option>
+                                    <option value="">Please selected</option>
+                                    @foreach($brands as $data)
+                                        <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -45,7 +45,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="slug" class="form-label">{{ __("Desciption") }}</label>
+                                <label for="slug" class="form-label">{{ __("Description") }}</label>
                                 <textarea class="form-control" name="description" id="description" cols="30" rows="5"></textarea>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                                 <select class="form-select" name="is_active" id="is_active" required>
                                     <option value="" disabled>{{ __('Please Select') }}</option>
                                     @foreach(\App\Common\Services\ProductServices::getAllStatus() as $key => $value)
-                                        <option value="{{ $key }}">{{ __($value) }}</option>
+                                        <option value="{{ $key }}" {{ $key == \App\Models\Product::STATUS_ACTIVE ? 'selected' : '' }}>{{ __($value) }}</option>
                                     @endforeach
                                 </select>
                             </div>

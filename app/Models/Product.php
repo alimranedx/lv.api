@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $fillable = ['name', 'slug', 'is_active'];
+    protected $guarded = [];
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE_TEXT = 'Active';
@@ -17,7 +17,10 @@ class Product extends Model
     }
     public function getByfilters($filters = [])
     {
-        return self::query()->get();
+        return self::query()
+            ->select('products.*', 'brands.name as brand_name')
+            ->leftJoin('brands', 'products.brand_id', '=', 'brands.id')
+            ->get();
     }
     public function findById($id)
     {

@@ -18,7 +18,7 @@ class ProductServices
             $validator = AppRequestValidation::validateProductStoreRequest($input);
             if(!empty($validator['status_code'])){
                 $status_code = $validator['status_code'];
-                $status_message = $validator['status_code'];
+                $status_message = $validator['status_message'];
             }
             if(empty($status_code)){
                 $prepared_data = $this->prepareData($input);
@@ -34,6 +34,7 @@ class ProductServices
                 }
             }
         }catch (\Throwable $th){
+            dd(Exception::fullMessage($th));
             $status_code = ApiService::API_SERVICE_FAILED_CODE;
             $status_message = ApiService::DEFAULT_TRY_CATCH_ERROR_MESSAGE;
         }
@@ -42,8 +43,12 @@ class ProductServices
     public function prepareData($input)
     {
         $data = [];
+        $data['brand_id'] = $input['brand_id'] ?? 0;
         $data['name'] = $input['name'] ?? '';
         $data['slug'] = $input['slug'] ?? '';
+        $data['description'] = !empty($input['description']) ? trim($input['description']) : '';
+        $data['price'] = $input['price'] ?? 0;
+        $data['stock'] = $input['stock'] ?? 0;
         $data['is_active'] = $input['is_active'] ?? Product::STATUS_ACTIVE;
         return $data;
     }

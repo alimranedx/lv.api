@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\SAdmin;
 
+use App\Common\Services\BrandServices;
 use App\Common\Services\ProductServices;
 use App\Common\Utility\ApiService;
 use App\Http\Controllers\Controller;
@@ -31,6 +32,7 @@ class ProductController extends Controller
             return redirect()->back()->with($flash_type, $flash_messagge);
 
         }
+        $data['brands'] = (new BrandServices())->getBrandData();
         return view('s_admin.product.add', $data);
     }
 
@@ -40,8 +42,9 @@ class ProductController extends Controller
             'module_title' => 'Brand',
             'page_title' => 'edit',
         ];
-        $data['brandObj'] = (new ProductServices())->findBrandById($id);
-        return view('s_admin.brand.edit', $data);
+        $data['brands'] = (new BrandServices())->getBrandData();
+        $data['productObj'] = (new ProductServices())->findProductById($id);
+        return view('s_admin.product.edit', $data);
     }
     public function update(Request $request,$id)
     {

@@ -4,34 +4,72 @@
     <div class="container">
         @include('s_admin.common_pages.page_header')
         <div class="text-end">
-            <a href="{{ route('super-admin.brand.list') }}" class="btn btn-primary float-end">{{ __('List') }}</a>
+            <a href="{{ route('super-admin.product.list') }}" class="btn btn-primary float-end">{{ __('List') }}</a>
         </div>
         <br>
         {{--        Main content goes there--}}
         <div class="row mt-4">
             <div class="col-md-12">
-                <form method="post" action="{{ route('super-admin.brand.update', $brandObj->id ?? 0) }}">
+                <form method="post" action="{{ route('super-admin.product.update', $productObj->id ?? 0) }}">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
+                                <label class="form-label">Brand</label>
+                                <select class="selectpicker w-100"
+                                        id="brand_id" name="brand_id"
+                                        data-live-search="true"
+                                        data-style="btn-light"
+                                        title="Select Brand"
+                                    {{--                                        multiple--}}
+                                >
+                                    <option value="">Please selected</option>
+                                    @foreach($brands as $data)
+                                        <option value="{{ $data->id }}" {{ $data->id == ($productObj->id ?? 0 ) ? 'selected' : ''  }}>{{ $data->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
                                 <label for="name" class="form-label">{{ __('Name') }}</label>
-                                <input class="form-control" type="text" id="name" name="name" value="{{ $brandObj->name ?? '' }}" />
+                                <input onkeyup="populateSlug(this)" class="form-control" type="text" id="name" name="name" value="{{ $productObj->name ?? '' }}" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="slug" class="form-label">{{ __("Slug") }}</label>
-                                <input class="form-control" type="text" id="slug" name="slug" value="{{ $brandObj->slug ?? '' }}" />
+                                <input class="form-control" type="text" id="slug" name="slug" value="{{ $productObj->slug ?? '' }}" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="slug" class="form-label">{{ __("Description") }}</label>
+                                <textarea class="form-control" name="description" id="description" cols="30" rows="5">
+                                    {{ $productObj->description ?? '' }}
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="slug" class="form-label">{{ __("Price") }}</label>
+                                <input class="form-control" type="number" id="price" name="price" value="{{ $productObj->price ?? 0 }}" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="slug" class="form-label">{{ __("Stock") }}</label>
+                                <input class="form-control" type="number" id="stock" name="stock" value="{{ $productObj->stock ?? 0 }}" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="slug" class="form-label">{{ __("Is Active") }}</label>
-                                <select class="form-select" name="is_active" id="is_active">
+                                <select class="form-select" name="is_active" id="is_active" required>
                                     <option value="" disabled>{{ __('Please Select') }}</option>
-                                    @foreach(\App\Common\Services\BrandServices::getAllStatus() as $key => $value)
-                                        <option value="{{ $key }}" {{  $brandObj->is_active == $key ? 'selected' : '' }} >{{ __($value) }}</option>
+                                    @foreach(\App\Common\Services\ProductServices::getAllStatus() as $key => $value)
+                                        <option value="{{ $key }}" {{ $key == $productObj->is_active ? 'selected' : '' }}>{{ __($value) }}</option>
                                     @endforeach
                                 </select>
                             </div>

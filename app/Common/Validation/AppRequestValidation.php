@@ -9,19 +9,19 @@ class AppRequestValidation
 {
     public static function validateRequest(array $input, array $rules, array $messages = []) : array
     {
-        $status = '';
-        $error_message = '';
+        $status_code = '';
+        $status_message = '';
         $error_messages = '';
         $validator = Validator::make($input, $rules, $messages);
         if ($validator->fails()) {
-            $status = ApiService::API_SERVICE_DEFAULT_VALIDATION_ERROR;
-            $error_message = $validator->errors()->first();
+            $status_code = ApiService::API_SERVICE_DEFAULT_VALIDATION_ERROR;
+            $status_message = $validator->errors()->first();
             $error_messages = $validator->errors();
         }
         return [
-            'status' => $status,
-            'message' => $error_message,
-            'messages' => $error_messages
+            'status_code' => $status_code,
+            'status_message' => $status_message,
+            'error_messages' => $error_messages
         ];
     }
 
@@ -44,17 +44,25 @@ class AppRequestValidation
     public static function validateProductStoreRequest($input)
     {
         return self::validateRequest($input, [
+            'brand_id' => 'required|integer',
             'name' => 'required|string|max:255|unique:products',
             'slug' => 'required|string|max:255|unique:products',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'stoke' => 'sometimes|integer',
             'is_active' => 'required|integer'
         ]);
     }
     public static function validateProductUpdateRequest($input, $id)
     {
         return self::validateRequest($input, [
+            'brand_id' => 'required|integer',
             'name' => 'required|string|max:255|unique:products,name,'. $id,
             'slug' => 'required|string|max:255|unique:products,slug,'. $id,
-            'is_active' => 'required|integer'
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'stoke' => 'sometimes|integer',
+            'is_active' => 'required|integer',
         ]);
     }
 }
