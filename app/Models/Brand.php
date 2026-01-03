@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Brand extends Model
 {
-    protected $fillable = ['name', 'slug', 'is_active'];
+    protected $fillable = ['name', 'slug', 'is_active', 'image'];
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE_TEXT = 'Active';

@@ -30,6 +30,7 @@ class AppRequestValidation
         return self::validateRequest($input, [
             'name' => 'required|string|max:255|unique:brands',
             'slug' => 'required|string|max:255|unique:brands',
+            'brand_image' => 'sometimes|image|mimes:jpg,jpeg,png,webp',
             'is_active' => 'required|integer'
         ]);
     }

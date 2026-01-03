@@ -4,6 +4,7 @@ namespace App\Common\Services;
 
 use App\Common\Utility\ApiService;
 use App\Common\Utility\Exception;
+use App\Common\Utility\Files\Image;
 use App\Common\Validation\AppRequestValidation;
 use App\Models\Brand;
 
@@ -22,6 +23,12 @@ class BrandServices
             }
             if(empty($status_code)){
                 $prepared_data = $this->prepareData($input);
+                if (!empty($input['brand_image']) && $input['brand_image']->isValid()) {
+                    $storedImagePath = Image::storeImage($input['brand_image']);
+                    if(!empty($storedImagePath)){
+                        $prepared_data['image'] = $storedImagePath;
+                    }
+                }
                 if(!empty($prepared_data)){
                     $brandObj = (new Brand())->storeData($prepared_data);
                     if(empty($brandObj)){
@@ -34,6 +41,7 @@ class BrandServices
                 }
             }
         }catch (\Throwable $th){
+            Image::deleteImage($storedImagePath ?? '');
             $status_code = ApiService::API_SERVICE_FAILED_CODE;
             $status_message = ApiService::DEFAULT_TRY_CATCH_ERROR_MESSAGE;
         }
