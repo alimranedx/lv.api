@@ -82,12 +82,20 @@ class BrandServices
             }
             if(empty($status_code)){
                 $prepared_data = $this->prepareData($input);
+                if (!empty($input['brand_image']) && $input['brand_image']->isValid()) {
+                    $storedImagePath = Image::storeImage($input['brand_image']);
+                    if(!empty($storedImagePath)){
+                        $prepared_data['image'] = $storedImagePath;
+                    }
+                }
                 if(!empty($prepared_data)){
+                    $oldBrandObj = (new Brand())->findById($id);
                     $brandObj = (new Brand())->updateById($id, $prepared_data);
                     if(empty($brandObj)){
                         $status_code = ApiService::API_SERVICE_FAILED_CODE;
                         $status_message = 'Brand not created';
                     }else{
+                        Image::deleteImage($oldBrandObj->image ?? '');
                         $status_code = ApiService::API_SERVICE_SUCCESS_CODE;
                         $status_message = ApiService::API_SERVICE_STATUS_MESSAGE[$status_code];
                     }
@@ -104,8 +112,10 @@ class BrandServices
         $status_code = '';
         $status_message = '';
         try {
+            $existingBrandObj = (new Brand())->findById($id);
             $brand = (new Brand())->deleteById($id);
             if(!empty($brand)){
+                Image::deleteImage($existingBrandObj->image ?? '');
                 $status_code = ApiService::API_SERVICE_SUCCESS_CODE;
                 $status_message = ApiService::API_SERVICE_STATUS_MESSAGE[$status_code];
             }else{

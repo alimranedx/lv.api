@@ -16,6 +16,7 @@
                         <th scope="col">{{ __('Name') }}</th>
                         <th scope="col">{{ __('Slug') }}</th>
                         <th scope="col">{{ __('Is Active') }}</th>
+                        <th scope="col">{{ __('Image') }}</th>
                         <th scope="col">{{ __('Action') }}</th>
                     </tr>
                     </thead>
@@ -28,6 +29,9 @@
                             <td>{{ $brand->name ?? '' }}</td>
                             <td>{{ $brand->slug ?? '' }}</td>
                             <td>{{ $is_active }}</td>
+                            <td>
+                                <img src="{{ asset('storage/app/public/'.$brand->image) }}" alt="brand_image_" width="60px" height="30px">
+                            </td>
                             <td>
                                 <a href="{{ route('super-admin.brand.edit', $brand->id) }}" class="btn btn-primary">{{ __('Edit') }}</a>
                                 <a href="{{ route('super-admin.brand.delete', $brand->id) }}" class="btn btn-primary">{{ __('Delete') }}</a>
