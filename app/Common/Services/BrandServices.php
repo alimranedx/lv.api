@@ -7,6 +7,7 @@ use App\Common\Utility\Exception;
 use App\Common\Utility\Files\Image;
 use App\Common\Validation\AppRequestValidation;
 use App\Models\Brand;
+use common\integration\Utility\Str;
 
 
 class BrandServices
@@ -50,8 +51,8 @@ class BrandServices
     public function prepareData($input)
     {
         $data = [];
-        $data['name'] = $input['name'] ?? '';
-        $data['slug'] = $input['slug'] ?? '';
+        $data['name'] = !empty($input['name']) ? Str::truncate( $input['name'], 255) : '';
+        $data['slug'] = !empty($input['slug'])  ? Str::truncate( $input['slug'], 255) : '';
         $data['is_active'] = $input['is_active'] ?? Brand::STATUS_ACTIVE;
         return $data;
     }
@@ -85,7 +86,7 @@ class BrandServices
                 if (!empty($input['brand_image']) && $input['brand_image']->isValid()) {
                     $storedImagePath = Image::storeImage($input['brand_image']);
                     if(!empty($storedImagePath)){
-                        $prepared_data['image'] = $storedImagePath;
+                        $prepared_data['image'] = Str::truncate($storedImagePath, 250);
                     }
                 }
                 if(!empty($prepared_data)){
