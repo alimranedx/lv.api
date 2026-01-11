@@ -10,7 +10,7 @@
         {{--        Main content goes there--}}
         <div class="row mt-4">
             <div class="col-md-12">
-                <form method="post" action="">
+                <form method="post" action="" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
@@ -72,6 +72,27 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="product_image" class="form-label">
+                                    {{ __("Product Images") }}
+                                </label>
+
+                                <input
+                                    type="file"
+                                    class="form-control"
+                                    id="product_image"
+                                    name="product_image[]"
+                                    accept="image/*"
+                                    multiple
+                                >
+
+                                <div
+                                    id="preview-container"
+                                    class="mt-2 d-flex gap-2 flex-wrap"
+                                ></div>
+                            </div>
+                        </div>
                     </div>
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary ps-4 pe-4">Save</button>
@@ -84,7 +105,29 @@
 @section('script')
     <script>
         $(document).ready(function () {
+            $('#product_image').on('change', function () {
+                const previewContainer = $('#preview-container');
+                previewContainer.html('');
+                $.each(this.files, function (index, file) {
+                    if (!file.type.startsWith('image/')) return;
+                    const reader = new FileReader();
 
+                    reader.onload = function (e) {
+                        const img = $('<img>')
+                            .attr('src', e.target.result)
+                            .addClass('img-thumbnail')
+                            .css({
+                                width: '100px',
+                                marginRight: '8px',
+                                marginBottom: '8px'
+                            });
+
+                        previewContainer.append(img);
+                    };
+
+                    reader.readAsDataURL(file);
+                });
+            });
         });
         function populateSlug(el) {
             const slug = el.value
