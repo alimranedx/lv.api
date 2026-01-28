@@ -129,4 +129,23 @@ class BrandServices
         }
         return [$status_code, $status_message];
     }
+    public function updateStatus($id, $status)
+    {
+        $status_code = '';
+        $status_message = '';
+        try {
+            $brand = (new Brand())->updateById($id, ['is_active' => $status]);
+            if(!empty($brand)){
+                $status_code = ApiService::API_SERVICE_SUCCESS_CODE;
+                $status_message = ApiService::API_SERVICE_STATUS_MESSAGE[$status_code];
+            }else{
+                $status_code = ApiService::API_SERVICE_FAILED_CODE;
+                $status_message = 'Brand not created';
+            }
+        }catch (\Throwable $th){
+            $status_code = ApiService::API_SERVICE_FAILED_CODE;
+            $status_message = ApiService::DEFAULT_TRY_CATCH_ERROR_MESSAGE;
+        }
+        return [$status_code, $status_message];
+    }
 }
