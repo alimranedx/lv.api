@@ -148,4 +148,8 @@ class BrandServices
         }
         return [$status_code, $status_message];
     }
+    public function getByfilters(array $filters)
+    {
+        return (new Brand())->getByfilterData($filters);
+    }
 }

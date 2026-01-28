@@ -31,4 +31,15 @@ class Brand extends Model
     {
         return self::query()->where('id',$id)->delete();
     }
+    public function getByfilterData($filters = [])
+    {
+         return self::query()
+         ->when(!empty($filters['is_active']), function ($query) use ($filters) {          
+             $query->where('is_active', $filters['is_active']);
+         })
+         ->when(!empty($filters['name']), function ($query) use ($filters) {
+             $query->where('name', 'like', '%' . $filters['name'] . '%');
+         })
+         ->get();
+    }
 }
